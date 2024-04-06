@@ -1,5 +1,15 @@
 # WorkExperienceAPI
 
+## Table of Contents
+- [About](#about)
+- [Services](#services)
+- [API Request Structure](#api-request-structure)
+- [ER Diagram](#er-diagram)
+- [Project Structure](#project-structure)
+- [Technologies Used](#technologies-used)
+- [Package Dependencies](#package-dependencies)
+- [Contact Information](#contact-information)
+
 ## About
 
 - **Purpose**: The repository contains code for a simple REST API developed using Express. It includes basic CRUD (Create, Read, Update, Delete) functionalities for managing my work experiences.
@@ -13,7 +23,7 @@ Here are the main services provided by the API:
 
 | Method | Endpoint    | Description                                                                                   |
 |--------|-------------|-----------------------------------------------------------------------------------------------|
-| GET    | `/get`      | Retrieves all work experiences.                                                              |
+| GET    | [`/get`](https://jn2307-api-server-8db335f8b5ca.herokuapp.com/get)      | Retrieves all work experiences. |
 | GET    | `/get/:id`  | Retrieves a specific work experience with the specified ID.                                  |
 | POST   | `/post`     | Adds a new work experience. Requires a work experience object to be sent.                    |
 | PUT    | `/put/:id`  | Updates an existing work experience with the specified ID. Requires a work experience object to be sent. |
@@ -37,18 +47,17 @@ Here are the main services provided by the API:
 * "description" can be either "null" or a string.
 
 ### ER Diagram
-   
-   | Table: workexperience |
-|-----------------------|
-| id: SERIAL PK        |
-| companyname: VARCHAR(255) NOT NULL |
-| jobtitle: VARCHAR(255) NOT NULL |
-| location: VARCHAR(255) NOT NULL |
-| startdate: DATE NOT NULL      |
-| enddate: DATE         |
-| description: TEXT     |
+**Table: workexperience**
 
-
+| Column       | Type          | Constraints |
+|--------------|---------------|-------------|
+| id           | SERIAL        | PK          |
+| companyname  | VARCHAR(255)  | NOT NULL    |
+| jobtitle     | VARCHAR(255)  | NOT NULL    |
+| location     | VARCHAR(255)  | NOT NULL    |
+| startdate    | DATE          | NOT NULL    |
+| enddate      | DATE          |             |
+| description  | TEXT          |             |
 
 ### Project Structure
 
