@@ -1,84 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WorkExperienceAPI</title>
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#2b5797">
-    <meta name="theme-color" content="#ffffff">
-</head>
-<body>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+    <meta name="msapplication-TileColor" content="#2b5797" />
+    <meta name="theme-color" content="#ffffff" />
+    <script src="/js/scrolladjustment.js" defer></script>
+    <script src="/js/toggledropdown.js" defer></script>
+    
+  </head>
+  <body>
     <main>
-        <div class="Pagecontent">
-            <header>
-                <nav>
-                    <ul class="nav-links">
-                        <li class="currentPage"><a href="/">WorkExperienceAPI</a></li>
-                    </ul>
-                </nav>
-            </header>
+      <header>
+    <nav>
+        <ul class="nav-links">
+            <li id="dropdownToggle" class="dropdown-toggle currentPage">WorkExperienceAPI &#9662;</li>
+            <div id="dropdownContainerCopy" class="dropdown-container-copy hidden"> <!-- gav upp på att få det här snyggare så jag nöjde mig med en lösning som fungerade iallafall -->
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#api-request-structure">API Request Structure</a></li>
+                <li><a href="#er-diagram">ER Diagram</a></li>
+                <li><a href="#project-structure">Project Structure</a></li>
+                <li><a href="#technologies-used">Technologies Used</a></li>
+                <li><a href="#package-dependencies">Package Dependencies</a></li>
+                <li><a href="#contact-information">Contact Information</a></li>
+            </div>
 
-            <section>
-                <h2>About WorkExperienceAPI</h2>
-                    <p>
-                        - <strong>Purpose</strong>: The repository contains code for a simple REST API developed using Express. It includes basic CRUD (Create, Read, Update, Delete) functionalities for managing my work experiences.<br>
-                        - <strong>Access</strong>: To access the GIT repository for this API, please visit <a href="https://github.com/Fa-collab1/DT207G-Moment2a/">GitHub: WorkExperienceAPI</a>.<br>
-                        - <strong>Database</strong>: PostgreSQL is used to store the course data, provided by Heroku as an add-on.<br>
-                        - <strong>Deployment</strong>: The API is deployed on Heroku, and the database is also hosted on the same platform.
-                    </p>
-            </section>            
-            <section>
-                <h2>Services</h2>
-                <p>Here are the main services provided by the API:</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Method</th>
-                            <th>Endpoint</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>GET</td>
-                            <td>/get</td>
-                            <td>Retrieves all work experiences.</td>
-                        </tr>
-                        <tr>
-                            <td>GET</td>
-                            <td>/get/:id</td>
-                            <td>Retrieves a specific work experience with the specified ID.</td>
-                        </tr>
-                        <tr>
-                            <td>POST</td>
-                            <td>/post</td>
-                            <td>Adds a new work experience. Requires a work experience object to be sent.</td>
-                        </tr>
-                        <tr>
-                            <td>PUT</td>
-                            <td>/put/:id</td>
-                            <td>Updates an existing work experience with the specified ID. Requires a work experience object to be sent.</td>
-                        </tr>
-                        <tr>
-                            <td>DELETE</td>
-                            <td>/delete/:id</td>
-                            <td>Deletes a work experience with the specified ID.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-            
-            
-            <section>
-                <h2>API Request Structure</h2>
-                <p>Example request structure for adding a new post:</p>
-                <pre><code>{
+            <div id="dropdownContainer" class="dropdown-container">
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#api-request-structure">API Request Structure</a></li>
+                <li><a href="#er-diagram">ER Diagram</a></li>
+                <li><a href="#project-structure">Project Structure</a></li>
+                <li><a href="#technologies-used">Technologies Used</a></li>
+                <li><a href="#package-dependencies">Package Dependencies</a></li>
+                <li><a href="#contact-information">Contact Information</a></li>
+            </div>
+        </ul>
+        
+</nav>
+
+        
+      </header>
+      <div class="Pagecontent">
+        <section>
+          <h2 id="about">About WorkExperienceAPI</h2>
+          <p>
+            - <strong>Purpose</strong>: The repository contains code for a
+            simple REST API developed using Express. It includes basic CRUD
+            (Create, Read, Update, Delete) functionalities for managing my work
+            experiences.<br />
+            - <strong>Access</strong>: To access the GIT repository for this
+            API, please visit
+            <a href="https://github.com/Fa-collab1/DT207G-Moment2a/"
+              >GitHub: WorkExperienceAPI</a
+            >.<br />
+            - <strong>Database</strong>: PostgreSQL is used to store the course
+            data, provided by Heroku as an add-on.<br />
+            - <strong>Deployment</strong>: The API is deployed on Heroku, and
+            the database is also hosted on the same platform.
+          </p>
+        </section>
+        <section>
+          <h2 id="services">Services</h2>
+          <p>Here are the main services provided by the API:</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>GET</td>
+                <td>/get</td>
+                <td>Retrieves all work experiences.</td>
+              </tr>
+              <tr>
+                <td>GET</td>
+                <td>/get/:id</td>
+                <td>
+                  Retrieves a specific work experience with the specified ID.
+                </td>
+              </tr>
+              <tr>
+                <td>POST</td>
+                <td>/post</td>
+                <td>
+                  Adds a new work experience. Requires a work experience object
+                  to be sent.
+                </td>
+              </tr>
+              <tr>
+                <td>PUT</td>
+                <td>/put/:id</td>
+                <td>
+                  Updates an existing work experience with the specified ID.
+                  Requires a work experience object to be sent.
+                </td>
+              </tr>
+              <tr>
+                <td>DELETE</td>
+                <td>/delete/:id</td>
+                <td>Deletes a work experience with the specified ID.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <h2 id="api-request-structure">API Request Structure</h2>
+          <p>Example request structure for adding a new post:</p>
+          <pre><code>{
   "id": "id",
   "companyname": "Example Farm AB",
   "jobtitle": "Predator Caretaker",
@@ -87,180 +129,219 @@
   "enddate": null,
   "description": "Responsible for developing and maintaining goats and sheep."
 }</code></pre>
-<p>Note:</p>
-<ul>
-    <li><code>id</code> is not sent when adding a new post.</li>
-    <li><code>enddate</code> can be either <code>null</code> or a date.</li>
-    <li><code>description</code> can be either <code>null</code> or a string.</li>
-</ul>
+          <p>Note:</p>
+          <ul>
+            <li><code>id</code> is not sent when adding a new post.</li>
+            <li>
+              <code>enddate</code> can be either <code>null</code> or a date.
+            </li>
+            <li>
+              <code>description</code> can be either <code>null</code> or a
+              string.
+            </li>
+          </ul>
+        </section>
 
-            </section>
-            
-            <section>
-                <h2>ER Diagram</h2>
-                <table>
-                    <caption>Table: workexperience</caption>
-                    <thead>
-                        <tr>
-                            <th>Column</th>
-                            <th>Type</th>
-                            <th>Constraints</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>id</td>
-                            <td>SERIAL</td>
-                            <td>PK</td>
-                        </tr>
-                        <tr>
-                            <td>companyname</td>
-                            <td>VARCHAR(255)</td>
-                            <td>NOT NULL</td>
-                        </tr>
-                        <tr>
-                            <td>jobtitle</td>
-                            <td>VARCHAR(255)</td>
-                            <td>NOT NULL</td>
-                        </tr>
-                        <tr>
-                            <td>location</td>
-                            <td>VARCHAR(255)</td>
-                            <td>NOT NULL</td>
-                        </tr>
-                        <tr>
-                            <td>startdate</td>
-                            <td>DATE</td>
-                            <td>NOT NULL</td>
-                        </tr>
-                        <tr>
-                            <td>enddate</td>
-                            <td>DATE</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>description</td>
-                            <td>TEXT</td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-            
-            
-            <section>
-                <h2>Project Structure</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Directory/File</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>src/</strong></td>
-                            <td>Directory containing the source code files.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>server.ts</strong></td>
-                            <td>Main entry point of the application.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>public/</strong></td>
-                            <td>Directory containing static assets such as CSS and images.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>views/</strong></td>
-                            <td>Directory containing EJS templates for rendering HTML.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>.env</strong></td>
-                            <td>Configuration file for storing environment variables. (Not included in the repository for safety reasons)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>package.json</strong></td>
-                            <td>File containing metadata and dependencies for the project.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>tsconfig.json</strong></td>
-                            <td>TypeScript configuration file specifying compiler options and project settings.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>.gitignore</strong></td>
-                            <td>File specifying patterns to be ignored by Git.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>README.md</strong></td>
-                            <td>Markdown file containing project documentation.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-            
-            
-            <section>
-                <h2>Technologies Used</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Technology</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>VS Code</td>
-                            <td>Integrated development environment (IDE) used for coding.</td>
-                        </tr>
-                        <tr>
-                            <td>Heroku</td>
-                            <td>Cloud platform used for deployment.</td>
-                        </tr>
-                        <tr>
-                            <td>PostgreSQL</td>
-                            <td>Relational database management system used for data storage (included in Heroku platform).</td>
-                        </tr>
-                        <tr>
-                            <td>Parcel</td>
-                            <td>Web application bundler used for bundling and serving static assets.</td>
-                        </tr>
-                        <tr>
-                            <td>TypeScript</td>
-                            <td>Typed superset of JavaScript used for development.</td>
-                        </tr>
-                        <tr>
-                            <td>Express</td>
-                            <td>Web application framework used for building APIs.</td>
-                        </tr>
-                        <tr>
-                            <td>EJS</td>
-                            <td>Embedded JavaScript templating language used for generating HTML markup.</td>
-                        </tr>
-                        <tr>
-                            <td>Dotenv</td>
-                            <td>Zero-dependency module used for loading environment variables from a `.env` file.</td>
-                        </tr>
-                        <tr>
-                            <td>CORS</td>
-                            <td>Node.js package used for enabling CORS with various options.</td>
-                        </tr>
-                        <tr>
-                            <td>PG</td>
-                            <td>PostgreSQL client for Node.js used for interfacing with PostgreSQL database.</td>
-                        </tr>
-                        <tr>
-                            <td>Node.js</td>
-                            <td>JavaScript runtime environment used for running the API server.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-            
-            <section>
-                <h2>Package Dependencies</h2>
-                <p>The <code>package.json</code> file specifies the project's dependencies:</p>
-                <pre><code>
+        <section>
+          <h2 id="er-diagram">ER Diagram</h2>
+          <table>
+            <caption>
+              Table: workexperience
+            </caption>
+            <thead>
+              <tr>
+                <th>Column</th>
+                <th>Type</th>
+                <th>Constraints</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>id</td>
+                <td>SERIAL</td>
+                <td>PK</td>
+              </tr>
+              <tr>
+                <td>companyname</td>
+                <td>VARCHAR(255)</td>
+                <td>NOT NULL</td>
+              </tr>
+              <tr>
+                <td>jobtitle</td>
+                <td>VARCHAR(255)</td>
+                <td>NOT NULL</td>
+              </tr>
+              <tr>
+                <td>location</td>
+                <td>VARCHAR(255)</td>
+                <td>NOT NULL</td>
+              </tr>
+              <tr>
+                <td>startdate</td>
+                <td>DATE</td>
+                <td>NOT NULL</td>
+              </tr>
+              <tr>
+                <td>enddate</td>
+                <td>DATE</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>description</td>
+                <td>TEXT</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <h2 id="project-structure">Project Structure</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Directory/File</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>src/</strong></td>
+                <td>Directory containing the source code files.</td>
+              </tr>
+              <tr>
+                <td><strong>server.ts</strong></td>
+                <td>Main entry point of the application.</td>
+              </tr>
+              <tr>
+                <td><strong>public/</strong></td>
+                <td>
+                  Directory containing static assets such as CSS and images.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>views/</strong></td>
+                <td>Directory containing EJS templates for rendering HTML.</td>
+              </tr>
+              <tr>
+                <td><strong>.env</strong></td>
+                <td>
+                  Configuration file for storing environment variables. (Not
+                  included in the repository for safety reasons)
+                </td>
+              </tr>
+              <tr>
+                <td><strong>package.json</strong></td>
+                <td>
+                  File containing metadata and dependencies for the project.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>tsconfig.json</strong></td>
+                <td>
+                  TypeScript configuration file specifying compiler options and
+                  project settings.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>.gitignore</strong></td>
+                <td>File specifying patterns to be ignored by Git.</td>
+              </tr>
+              <tr>
+                <td><strong>README.md</strong></td>
+                <td>Markdown file containing project documentation.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <h2 id="technologies-used">Technologies Used</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Technology</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>VS Code</td>
+                <td>
+                  Integrated development environment (IDE) used for coding.
+                </td>
+              </tr>
+              <tr>
+                <td>Heroku</td>
+                <td>Cloud platform used for deployment.</td>
+              </tr>
+              <tr>
+                <td>PostgreSQL</td>
+                <td>
+                  Relational database management system used for data storage
+                  (included in Heroku platform).
+                </td>
+              </tr>
+              <tr>
+                <td>Parcel</td>
+                <td>
+                  Web application bundler used for bundling and serving static
+                  assets.
+                </td>
+              </tr>
+              <tr>
+                <td>TypeScript</td>
+                <td>Typed superset of JavaScript used for development.</td>
+              </tr>
+              <tr>
+                <td>Express</td>
+                <td>Web application framework used for building APIs.</td>
+              </tr>
+              <tr>
+                <td>EJS</td>
+                <td>
+                  Embedded JavaScript templating language used for generating
+                  HTML markup.
+                </td>
+              </tr>
+              <tr>
+                <td>Dotenv</td>
+                <td>
+                  Zero-dependency module used for loading environment variables
+                  from a `.env` file.
+                </td>
+              </tr>
+              <tr>
+                <td>CORS</td>
+                <td>
+                  Node.js package used for enabling CORS with various options.
+                </td>
+              </tr>
+              <tr>
+                <td>PG</td>
+                <td>
+                  PostgreSQL client for Node.js used for interfacing with
+                  PostgreSQL database.
+                </td>
+              </tr>
+              <tr>
+                <td>Node.js</td>
+                <td>
+                  JavaScript runtime environment used for running the API
+                  server.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <h2 id="package-dependencies">Package Dependencies</h2>
+          <p>
+            The <code>package.json</code> file specifies the project's
+            dependencies:
+          </p>
+          <pre><code>
             {
               "name": "moment2a",
               "version": "1.0.0",
@@ -285,18 +366,21 @@
                 "@types/node": "^20.12.5"
               }
             }</code></pre>
-            </section>
-            
+        </section>
 
-            <section>
-                <h2>Contact Information</h2>
-                <p>For questions or support, I know where to find me...</p>
-            </section>
-            
-        </div>
-        <footer>
-            <p>&copy; 2024 <a href="mailto:joni2307@student.miun.se">joni2307@student.miun.se</a>. Licensed under the <a href="https://opensource.org/license/mit">MIT License</a>.</p>
-        </footer>
+        <section id="contact-information">
+          <h2>Contact Information</h2>
+          <p>For questions or support, I know where to find me...</p>
+        </section>
+      </div>
+      <footer>
+        <p>
+          &copy; 2024
+          <a href="mailto:joni2307@student.miun.se">joni2307@student.miun.se</a
+          >. Licensed under the
+          <a href="https://opensource.org/license/mit">MIT License</a>.
+        </p>
+      </footer>
     </main>
-</body>
+  </body>
 </html>

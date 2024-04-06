@@ -1,7 +1,8 @@
+
 * {
     box-sizing: border-box;
-    /* Include padding and border in the element's total width and height */
- 
+    /* Inkludera padding och border i elementets totala bredd och höjd */
+     
 }
 
 
@@ -13,12 +14,45 @@ body {
     background-color: #f4f4f4;
     color: #333;
     max-width: 100vw;
+ 
+}
+
+.hidden {
+    display: none!important;
+}   
+
+
+#dropdownContainer {
+    display: inline;
+  }
+
+  #dropdownContainerCopy {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: rgba(68, 68, 68, 0.9); /* Mörkgrå bakgrundsfärg med 90% opacitet */
+    color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+#dropdownContainerCopy li {
+    list-style: none;
+    padding: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .Pagecontent {
     min-height: 94vh;
     padding: 0 !important;
     margin: 0 !important;
+    padding-top: 5vh!important;
+
 }
 
 
@@ -31,6 +65,7 @@ section {
     text-align: left;
     font-size: 1.3vh;
     overflow: auto;
+ 
 }
 
 
@@ -40,10 +75,15 @@ header {
     color: #fff;
     padding: 0.5vh;
     text-align: center;
-    min-height: 4.5vh;
-    max-height: 4.5vh;
+    min-height: 5vh;
+    max-height: 5vh;
     font-size: 1.3vh;
     text-align: left;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    
+
 }
 
 
@@ -65,10 +105,6 @@ footer {
 
 
 
-
-
-
-
 /* stil för navigationslänkar */
 .nav-links {
     list-style: none;
@@ -83,7 +119,10 @@ footer {
 .nav-links a {
     color: white;
     text-decoration: none;
+    
+    
 }
+
 
 /* stil för välkomstsektionen (ingressen)*/
 .welcome {
@@ -184,6 +223,17 @@ p {
     text-align: left;
 }
 
+.currentPage {
+    border: #f5f5f5 0.1vh solid;
+    padding: 0.5vh;
+    border-radius: 0.5vh;
+    box-shadow: 0 0 0.5vh rgba(0, 0, 0, 0.1);
+}
+
+caption {
+ text-align: left;
+}
+
 /* Responsive styling */
 @media only screen and (max-width: 600px) {
 
@@ -198,10 +248,16 @@ p {
 @media only screen and (max-width: 1600px) {
 
     table {
-        width: 100%;
+        width: 100% ;
     }
 }
 
+@media only screen and (max-width: 1500px) {
+    /* Select all list items after the first one in the nav bar */
+    #dropdownContainer {
+        display: none;
+    }
+}
 
 @media only screen and (max-height: 600px) {
 
@@ -220,3 +276,4 @@ p {
         width: 100%;
     }
 }
+
