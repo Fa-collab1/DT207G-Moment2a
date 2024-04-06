@@ -34,7 +34,7 @@ Here are the main services provided by the API:
 * "description" can be either "null" or a string.
 
 ### ER Diagram
-   +-------------------+
+   
    |   workexperience  |
    +-------------------+
    |   id: SERIAL PK   |
@@ -44,7 +44,7 @@ Here are the main services provided by the API:
    |     startdate: DATE    |
    |      enddate: DATE     |
    |  description: TEXT     |
-   +-------------------+
+   
 
 
 ### Project Structure
