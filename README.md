@@ -11,13 +11,13 @@
 
 Here are the main services provided by the API:
 
-| Method | Endpoint                        | Description                                                   |
-|--------|---------------------------------|---------------------------------------------------------------|
-| GET    | /workexperience                 | Retrieves all work experiences.                               |
-| GET    | /workexperience/:id             | Retrieves a specific work experience with the specified ID.  |
-| POST   | /workexperience                 | Adds a new work experience. Requires a work experience object to be sent. |
-| PUT    | /workexperience/:id             | Updates an existing work experience with the specified ID. Requires a work experience object to be sent. |
-| DELETE | /workexperience/:id             | Deletes a work experience with the specified ID.             |
+| Method | Endpoint    | Description                                                                                   |
+|--------|-------------|-----------------------------------------------------------------------------------------------|
+| GET    | `/get`      | Retrieves all work experiences.                                                              |
+| GET    | `/get/:id`  | Retrieves a specific work experience with the specified ID.                                  |
+| POST   | `/post`     | Adds a new work experience. Requires a work experience object to be sent.                    |
+| PUT    | `/put/:id`  | Updates an existing work experience with the specified ID. Requires a work experience object to be sent. |
+| DELETE | `/delete/:id` | Deletes a work experience with the specified ID.                                             |
 
 ### API Request Structure
 
