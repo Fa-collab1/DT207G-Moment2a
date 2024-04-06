@@ -20,7 +20,7 @@ Here are the main services provided by the API:
 
 ```json
 {
-  "Id": "id" (note: not sent when adding a new course),
+  "Id": "id",
   "companyname": "Example Farm AB",
   "jobtitle": "Predator Caretaker",
   "location": "Bjurholm",
@@ -29,6 +29,11 @@ Here are the main services provided by the API:
   "description": "Responsible for developing and maintaining goats and sheep."
 }
 ```
+* Id is not sent when adding a new post.
+* enddate can be either null or a date.
+* description: can be either null or a string.
+
+
 
 ### Project Structure
 
