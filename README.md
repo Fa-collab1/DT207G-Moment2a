@@ -20,7 +20,7 @@ Here are the main services provided by the API:
 
 ```json
 {
-  "Id": "id (note: not sent when adding a new course)",
+  "Id": "id" (note: not sent when adding a new course),
   "companyname": "Example Farm AB",
   "jobtitle": "Predator Caretaker",
   "location": "Bjurholm",
