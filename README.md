@@ -2,8 +2,8 @@
 
 ## About
 
-- **Purpose**: The repository contains code for a simple REST API developed using Express. It includes basic CRUD (Create, Read, Update, Delete) functionalities for managing work experiences.
-- **Access**: To access the home page of the API, you can visit [WorkExperienceAPI](https://jn2307-api-server-8db335f8b5ca.herokuapp.com/).
+- **Purpose**: The repository contains code for a simple REST API developed using Express. It includes basic CRUD (Create, Read, Update, Delete) functionalities for managing my work experiences.
+- **Access**: To access the home page of the API, I visit [WorkExperienceAPI](https://jn2307-api-server-8db335f8b5ca.herokuapp.com/).
 - **Database**: PostgreSQL is used to store the course data, provided by Heroku as an add-on.
 - **Deployment**: The API is deployed on Heroku, and the database is also hosted on the same platform.
 
