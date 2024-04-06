@@ -1,3 +1,13 @@
+require('dotenv').config(); // Detta läser min .env-fil och gör variablerna tillgängliga
+
+const { Pool } = require('pg'); // Använder pg-paketet för att skapa en databasklient
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL, // Använder DATABASE_URL från din .env
+  ssl: {
+    rejectUnauthorized: false // Detta behövs för att ansluta till Heroku Postgres säkert
+  }
+});
+
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -38,4 +48,23 @@ app.listen(port, () => {
 // Route för "Index" sidan, vill mest bara testa att det fungerar, tror inte att jag kommer använda den i detta projekt
 app.get("/", (req, res) => {
     res.render("index"); // Rendera "About" sidan
+    pool.query('SELECT * FROM exempel_tabell', (error, results) => {
+        if (error) {
+          throw error;
+        }
+        console.log(results.rows);
+      });
+});
+
+
+app.get('/api/test', (req, res) => {
+    pool.query('SELECT * FROM exempel_tabell', (error, results) => {
+        if (error) {
+            // Skicka ett felmeddelande om något går fel med databasförfrågan
+            res.status(500).json({ error: "Det gick inte att hämta data från databasen" });
+        } else {
+            // Skicka databasresultaten som JSON om allt går bra
+            res.status(200).json(results.rows);
+        }
+    });
 });
