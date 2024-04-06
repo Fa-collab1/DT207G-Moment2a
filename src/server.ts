@@ -38,35 +38,32 @@ app.use(express.json());
 app.use(cors());
 
 
-app.get('/get/:id', (req, res) => {
-    // Kontrollera om en ID-query-parameter har tillhandahållits
+app.get('/get/:id?', (req, res) => {
     const id = req.params.id;
 
     if (id) {
-        // Om ett ID tillhandahålls, hämta den specifika raden med det ID:et
+        // Om ett ID har tillhandahållits, hämta den specifika raden med det ID:et
         pool.query('SELECT id, companyname, jobtitle, location, startdate, enddate, description FROM workexperience WHERE id = $1', [id], (error, results) => {
             if (error) {
                 res.status(500).json({ error: "Database error" });
             } else if (results.rows.length > 0) {
-                // Skicka den hämtade raden som JSON               
-                res.status(200).json(results.rows[0]);
+                res.status(200).json(results.rows[0]); // Skicka bara första raden
             } else {
-                // Om inga rader hittades med det ID:et, skicka ett lämpligt meddelande
                 res.status(404).json({ message: "Requested post not found" });
             }
         });
     } else {
-        // Om inget ID tillhandahålls, hämta alla rader sorterade
+        // Om ingen ID-parameter har tillhandahållits, hämta alla rader
         pool.query('SELECT id, companyname, jobtitle, location, startdate, enddate, description FROM workexperience ORDER BY enddate DESC', (error, results) => {
             if (error) {
                 res.status(500).json({ error: "Database error" });
             } else {
-                // Skicka alla hämtade rader som JSON
                 res.status(200).json(results.rows);
             }
         });
     }
 });
+
 
 app.post('/post', (req, res) => {
     const { companyname, jobtitle, location, startdate, enddate, description } = req.body;
