@@ -1,8 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = 3000;
-//const port = process.env.PORT; // Portnummer för för publicerad lösning tänker jag mig
+const port = process.env.PORT || 3000;
 
 app.set("view engine", "ejs"); // Ange EJS som vy-motorn
 app.use(express.static("public")); // Ange mapp för statiska filer
