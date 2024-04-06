@@ -2,7 +2,11 @@
 
 ## About
 
-This repository contains code for a simple REST API built with Express. The API is designed to manage various courses that I have studied during my time at Mid Sweden University. Basic CRUD (Create, Read, Update, Delete) functionality is implemented. This API provides services for managing work experiences. With this API, I can perform various operations such as fetching, adding, updating, and deleting work experiences. To access the home page for the API, I visit [WorkExperienceAPI](https://jn2307-api-server-8db335f8b5ca.herokuapp.com/). The database used for storing the course data is PostgreSQL, which is provided by Heroku as an add-on. The API is deployed on Heroku, and the database is hosted on the same platform.
+- **Purpose**: The repository contains code for a simple REST API built with Express to manage courses studied at Mid Sweden University, offering CRUD functionality for work experiences.
+- **Access**: Visit [WorkExperienceAPI](WorkExperienceAPI) to access the home page of the API.
+- **Database**: PostgreSQL is used to store course data, provided by Heroku as an add-on.
+- **Deployment**: Both the API and the database are deployed on Heroku for seamless integration and management of work experience data.
+
 
 ## Services
 
