@@ -43,7 +43,10 @@ app.get('/get/:id?', (req, res) => {
 
     if (id) {
         // Om ett ID har tillhandahållits, hämta den specifika raden med det ID:et
-        pool.query('SELECT id, companyname, jobtitle, location, startdate, enddate, description FROM workexperience WHERE id = $1', [id], (error, results) => {
+        pool.query(
+            'SELECT id, companyname, jobtitle, location, TO_CHAR(startdate, \'YYYY-MM-DD\') AS startdate, TO_CHAR(enddate, \'YYYY-MM-DD\') AS enddate, description FROM workexperience WHERE id = $1', 
+            [id], 
+            (error, results) => {
             if (error) {
                 res.status(500).json({ error: "Database error" });
             } else if (results.rows.length > 0) {
@@ -54,8 +57,10 @@ app.get('/get/:id?', (req, res) => {
         });
     } else {
         // Om ingen ID-parameter har tillhandahållits, hämta alla rader
-        pool.query('SELECT id, companyname, jobtitle, location, startdate, enddate, description FROM workexperience ORDER BY enddate DESC', (error, results) => {
-            if (error) {
+        pool.query(
+            'SELECT id, companyname, jobtitle, location, TO_CHAR(startdate, \'YYYY-MM-DD\') AS startdate, TO_CHAR(enddate, \'YYYY-MM-DD\') AS enddate, description FROM workexperience ORDER BY enddate DESC', 
+            (error, results) => {
+                      if (error) {
                 res.status(500).json({ error: "Database error" });
             } else {
                 res.status(200).json(results.rows);
@@ -63,6 +68,7 @@ app.get('/get/:id?', (req, res) => {
         });
     }
 });
+
 
 
 app.post('/post', (req, res) => {
