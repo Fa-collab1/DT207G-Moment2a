@@ -22,7 +22,16 @@ body {
 }
 
 
-
+section {
+    padding: 1vh;
+    margin: 1vh;
+    background-color: #f9f9f9;
+    border-radius: 1vh;
+    box-shadow: 0 0 1vh rgba(0, 0, 0, 0.1);
+    text-align: left;
+    font-size: 1.3vh;
+    overflow: auto;
+}
 
 
 /* stil för sidhuvudet */

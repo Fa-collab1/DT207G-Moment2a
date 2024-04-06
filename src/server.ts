@@ -7,9 +7,9 @@ function createTableIfNotExists() {
 
     pool.query(createTableScript, (error, results) => {
         if (error) {
-            console.error('Det gick inte att skapa tabellen:', error);
+            console.error('Error creating table:', error);
         } else {
-            console.log('Tabellen skapades framgångsrikt (om den inte redan fanns)');
+            console.log('Table successfully created! (or already existing)');
         }
     });
 }
@@ -19,7 +19,7 @@ require('dotenv').config(); // Detta läser min .env-fil och gör variablerna ti
 
 const { Pool } = require('pg'); // Använder pg-paketet för att skapa en databasklient
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // Använder DATABASE_URL från din .env
+  connectionString: process.env.DATABASE_URL, // Använder DATABASE_URL från min .env
   ssl: {
     rejectUnauthorized: false // Detta behövs för att ansluta till Heroku Postgres säkert
   }
@@ -37,24 +37,63 @@ app.use(express.urlencoded({ extended: true })); // Middleware för att tolka UR
 app.use(express.json());
 app.use(cors());
 
-app.get('/api', (req, res) => {
-    res.json({ message: 'Welcome to my REST API' });
+
+app.get('/get', (req, res) => {
+    pool.query('SELECT id, companyname, jobtitle, location, startdate, enddate, description FROM workexperience', (error, results) => {
+        if (error) {
+            // Skicka ett felmeddelande om något går fel med databasförfrågan
+            res.status(500).json({ error: "Database error" });
+        } else {
+            // Skicka databasresultaten som JSON om allt går bra
+            res.status(200).json(results.rows);
+        }
+    });
 });
 
-app.get('/api/users', (req, res) => {
-    res.json({ message: 'GET request to api/users' });
+app.post('/post', (req, res) => {
+    const { companyname, jobtitle, location, startdate, enddate, description } = req.body;
+
+    // Skicka en SQL-förfrågan till databasen för att infoga en ny rad
+    pool.query('INSERT INTO workexperience (companyname, jobtitle, location, startdate, enddate, description) VALUES ($1, $2, $3, $4, $5, $6)', 
+        [companyname, jobtitle, location, startdate, enddate, description], 
+        (error, results) => {
+            if (error) {
+                res.status(500).json({ error: "Request failed!" });
+            } else {
+                res.status(201).json({ message: "workexperience added successfully" });
+            }
+        }
+    );
 });
 
-app.post('/api/users', (req, res) => {
-    res.json({ message: 'POST request to api/users' });
+app.put('/put/:id', (req, res) => {
+    const id = req.params.id;
+    const { companyname, jobtitle, location, startdate, enddate, description } = req.body;
+
+    // Skicka en SQL-förfrågan till databasen för att uppdatera en rad med ett visst ID
+    pool.query('UPDATE workexperience SET companyname = $1, jobtitle = $2, location = $3, startdate = $4, enddate = $5, description = $6 WHERE id = $7', 
+        [companyname, jobtitle, location, startdate, enddate, description, id], 
+        (error, results) => {
+            if (error) {
+                res.status(500).json({ error: "Request failed!" });
+            } else {
+                res.status(200).json({ message: `workexperience with id ${id} updated` });
+            }
+        }
+    );
 });
 
-app.put('/api/users/:id', (req, res) => {
-    res.json({ message: 'PUT request to /users - with id: ' + req.params.id });
-});
+app.delete('/delete/:id', (req, res) => {
+    const id = req.params.id; 
 
-app.delete('/api/users/:id', (req, res) => {
-    res.json({ message: 'DELETE request to /users - with id: ' + req.params.id });
+    // Skicka en SQL-förfrågan till databasen för att ta bort en rad med ett visst ID
+    pool.query('DELETE FROM workexperience WHERE id = $1', [id], (error, results) => {
+        if (error) {
+            res.status(500).json({ error: "Request failed!" });
+        } else {
+            res.status(200).json({ message: `workexperience with id ${id} deleted` });
+        }
+    });
 });
 
 app.listen(port, () => {
@@ -62,27 +101,9 @@ app.listen(port, () => {
     console.log('Server is running on port: ' + port);
 });
 
-
-// Route för "Index" sidan, vill mest bara testa att det fungerar, tror inte att jag kommer använda den i detta projekt
+// Route för "Index" sidan
 app.get("/", (req, res) => {
-    res.render("index"); // Rendera "About" sidan
-    pool.query('SELECT * FROM workexperience', (error, results) => {
-        if (error) {
-          throw error;
-        }
-        console.log(results.rows);
-      });
+    res.render("index"); // En infosida om hur API-grejerna fungerar
 });
 
 
-app.get('/api/test', (req, res) => {
-    pool.query('SELECT * FROM workexperience', (error, results) => {
-        if (error) {
-            // Skicka ett felmeddelande om något går fel med databasförfrågan
-            res.status(500).json({ error: "Det gick inte att hämta data från databasen" });
-        } else {
-            // Skicka databasresultaten som JSON om allt går bra
-            res.status(200).json(results.rows);
-        }
-    });
-});
