@@ -13,7 +13,7 @@ Here are the main services provided by the API:
 
 | Method | Endpoint    | Description                                                                                   |
 |--------|-------------|-----------------------------------------------------------------------------------------------|
-| GET    | `/get`      | Retrieves all work experiences.                                                              |
+| GET    | [`/get`](https://jn2307-api-server-8db335f8b5ca.herokuapp.com/get)      | Retrieves all work experiences. |
 | GET    | `/get/:id`  | Retrieves a specific work experience with the specified ID.                                  |
 | POST   | `/post`     | Adds a new work experience. Requires a work experience object to be sent.                    |
 | PUT    | `/put/:id`  | Updates an existing work experience with the specified ID. Requires a work experience object to be sent. |
