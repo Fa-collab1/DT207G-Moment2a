@@ -20,7 +20,7 @@ BEGIN
             ('Plantvision AB', 'System Developer', 'Stockholm, Sweden', '2018-04-01', '2018-06-30', 'Internship in education for system developers'),
             ('Semantix AB', 'Group Business Controller', 'Stockholm, Sweden', '2015-11-01', '2017-02-28', 'BI analyst'),
             ('Semantix AB', 'BI Analyst', 'Stockholm, Sweden', '2009-08-01', '2015-11-30', 'BI business and procurement analyst'),
-            ('Semantix AB / TolkJouren', 'Interpreter Coordinator / Business Developer / Business System Requirement Specifier', 'Stockholm, Sweden', '2001-10-01', '2009-08-31', NULL),
+            ('TolkJouren AB / Semantix AB', 'Interpreter Coordinator / Business Developer / Business System Requirement Specifier', 'Stockholm, Sweden', '2001-10-01', '2009-08-31', NULL),
             ('Stockholm City', 'Healthcare Assistant', 'Stockholm, Sweden', '2001-06-01', '2004-05-31', 'Intermittant work while studying'),
             ('Linköping Municipality', 'Healthcare Assistant', 'Linköping, Sweden', '2001-01-01', '2001-06-30', 'Intermittant work while studying'),
             ('Ericsson Radio Access AB - TDMA', 'Modeling and Simulation', 'Stockholm, Sweden', '2000-06-01', '2000-08-31', 'Internship in civil engineering education'),
