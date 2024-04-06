@@ -7,7 +7,7 @@ BEGIN
             companyname VARCHAR(255) NOT NULL,
             jobtitle VARCHAR(255) NOT NULL,
             location VARCHAR(255) NOT NULL,
-            startdate DATE,
+            startdate DATE NOT NULL,
             enddate DATE,
             description TEXT
         );
