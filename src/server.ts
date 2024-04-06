@@ -28,7 +28,7 @@ const pool = new Pool({
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 app.set("view engine", "ejs"); // Ange EJS som vy-motorn
 app.use(express.static("public")); // Ange mapp för statiska filer
@@ -38,9 +38,9 @@ app.use(express.json());
 app.use(cors());
 
 
-app.get('/get', (req, res) => {
+app.get('/get/:id', (req, res) => {
     // Kontrollera om en ID-query-parameter har tillhandahållits
-    const id = req.query.id;
+    const id = req.params.id;
 
     if (id) {
         // Om ett ID tillhandahålls, hämta den specifika raden med det ID:et
