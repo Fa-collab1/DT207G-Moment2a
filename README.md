@@ -113,6 +113,6 @@ The project follows a standard structure for a Node.js application with TypeScri
 
 ## Contact Information
 
-For questions or support, feel free to contact me at [joni2307@student.miun.se](mailto:joni2307@student.miun.se).
+For questions or support, I know where to find me...
 
 &copy; 2024 All rights reserved.
