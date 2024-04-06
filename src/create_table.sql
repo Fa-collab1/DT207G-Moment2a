@@ -23,7 +23,7 @@ BEGIN
             ('TolkJouren AB / Semantix AB', 'Interpreter Coordinator / Business Developer / Business System Requirement Specifier', 'Stockholm, Sweden', '2001-10-01', '2009-08-31', NULL),
             ('Stockholm City', 'Healthcare Assistant', 'Stockholm, Sweden', '2001-06-01', '2004-05-31', 'Intermittant work while studying'),
             ('Linköping Municipality', 'Healthcare Assistant', 'Linköping, Sweden', '2001-01-01', '2001-06-30', 'Intermittant work while studying'),
-            ('Ericsson Radio Access AB - TDMA', 'Modeling and Simulation', 'Stockholm, Sweden', '2000-06-01', '2000-08-31', 'Internship in civil engineering education'),
+            ('Ericsson Radio Access AB - TDMA', 'Modeling and Simulation', 'Stockholm, Sweden', '2000-06-01', '2000-08-31', 'Internship in the Master of Science in Engineering program'),
             ('Malung Municipality', 'Healthcare Assistant/Teacher', 'Malung, Sweden', '1997-06-01', '2000-12-31', 'Intermittant work while studying'),
             ('Humle Pedagogik', 'Mathematics Teacher', 'Transtrand, Sweden', '1999-01-01', '1999-06-30', 'Adult Education: Mathematics B + C'),
             ('Studieförbundet Vuxenskolan', 'English Teacher', 'Malung, Sweden', '1997-09-01', '1997-12-31', 'Adult Education: English B');
