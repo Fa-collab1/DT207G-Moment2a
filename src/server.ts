@@ -2,6 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = 3000;
+//const port = process.env.PORT; // Portnummer för för publicerad lösning tänker jag mig
+
+app.set("view engine", "ejs"); // Ange EJS som vy-motorn
+app.use(express.static("public")); // Ange mapp för statiska filer
+app.use(express.urlencoded({ extended: true })); // Middleware för att tolka URL
 
 app.use(express.json());
 app.use(cors());
@@ -31,3 +36,7 @@ app.listen(port, () => {
 });
 
 
+// Route för "Index" sidan, vill mest bara testa att det fungerar, tror inte att jag kommer använda den i detta projekt
+app.get("/", (req, res) => {
+    res.render("index"); // Rendera "About" sidan
+});
