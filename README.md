@@ -35,16 +35,16 @@ Here are the main services provided by the API:
 
 ### ER Diagram
    
-   |   workexperience  |
-   +-------------------+
-   |   id: SERIAL PK   |
-   | companyname: VARCHAR(255) NOT NULL |
-   |  jobtitle: VARCHAR(255) NOT NULL  |
-   |  location: VARCHAR(255) NOT NULL  |
-   |     startdate: DATE    |
-   |      enddate: DATE     |
-   |  description: TEXT     |
-   
+   | Table: workexperience |
+|-----------------------|
+| id: SERIAL PK        |
+| companyname: VARCHAR(255) NOT NULL |
+| jobtitle: VARCHAR(255) NOT NULL |
+| location: VARCHAR(255) NOT NULL |
+| startdate: DATE       |
+| enddate: DATE         |
+| description: TEXT     |
+
 
 
 ### Project Structure
