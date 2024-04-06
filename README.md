@@ -1,5 +1,15 @@
 # WorkExperienceAPI
 
+## Table of Contents
+- [About](#about)
+- [Services](#services)
+- [API Request Structure](#api-request-structure)
+- [ER Diagram](#er-diagram)
+- [Project Structure](#project-structure)
+- [Technologies Used](#technologies-used)
+- [Package Dependencies](#package-dependencies)
+- [Contact Information](#contact-information)
+
 ## About
 
 - **Purpose**: The repository contains code for a simple REST API developed using Express. It includes basic CRUD (Create, Read, Update, Delete) functionalities for managing my work experiences.
