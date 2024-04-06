@@ -1,3 +1,20 @@
+const fs = require('fs');
+const path = require('path');
+
+function createTableIfNotExists() {
+    const createTableScriptPath = path.join(__dirname, 'create_table.sql');
+    const createTableScript = fs.readFileSync(createTableScriptPath, 'utf8');
+
+    pool.query(createTableScript, (error, results) => {
+        if (error) {
+            console.error('Det gick inte att skapa tabellen:', error);
+        } else {
+            console.log('Tabellen skapades framgångsrikt (om den inte redan fanns)');
+        }
+    });
+}
+
+
 require('dotenv').config(); // Detta läser min .env-fil och gör variablerna tillgängliga
 
 const { Pool } = require('pg'); // Använder pg-paketet för att skapa en databasklient
@@ -41,6 +58,7 @@ app.delete('/api/users/:id', (req, res) => {
 });
 
 app.listen(port, () => {
+    createTableIfNotExists();
     console.log('Server is running on port: ' + port);
 });
 
@@ -48,7 +66,7 @@ app.listen(port, () => {
 // Route för "Index" sidan, vill mest bara testa att det fungerar, tror inte att jag kommer använda den i detta projekt
 app.get("/", (req, res) => {
     res.render("index"); // Rendera "About" sidan
-    pool.query('SELECT * FROM exempel_tabell', (error, results) => {
+    pool.query('SELECT * FROM workexperience', (error, results) => {
         if (error) {
           throw error;
         }
@@ -58,7 +76,7 @@ app.get("/", (req, res) => {
 
 
 app.get('/api/test', (req, res) => {
-    pool.query('SELECT * FROM exempel_tabell', (error, results) => {
+    pool.query('SELECT * FROM workexperience', (error, results) => {
         if (error) {
             // Skicka ett felmeddelande om något går fel med databasförfrågan
             res.status(500).json({ error: "Det gick inte att hämta data från databasen" });
