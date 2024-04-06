@@ -53,10 +53,10 @@ The project follows a standard structure for a Node.js application with TypeScri
 | VS Code      | Integrated development environment (IDE) used for coding.                     |
 | Heroku       | Cloud platform used for deployment.                                           |
 | PostgreSQL   | Relational database management system used for data storage (included in Heroku platform). |
-| Parcel       | Web application bundler used for bundling and serving static assets.          |
+| Parcel       | Web application bundler used for bundling and serving static assets.           |
 | TypeScript   | Typed superset of JavaScript used for development.                             |
 | Express      | Web application framework used for building APIs.                              |
-| EJS          | Embedded JavaScript templating language used for generating HTML markup.      |
+| EJS          | Embedded JavaScript templating language used for generating HTML markup.       |
 | Dotenv       | Zero-dependency module used for loading environment variables from a `.env` file. |
 | CORS         | Node.js package used for enabling CORS with various options.                  |
 | PG           | PostgreSQL client for Node.js used for interfacing with PostgreSQL database.  |
@@ -93,6 +93,6 @@ The project follows a standard structure for a Node.js application with TypeScri
 
 ## Contact Information
 
-For questions or support, I know where to find me...
+For questions or support, feel free to contact me at [joni2307@student.miun.se](mailto:joni2307@student.miun.se).
 
-&copy; 2024 [joni2307@student.miun.se](mailto:joni2307@student.miun.se) All rights reserved.
+&copy; 2024 All rights reserved.
