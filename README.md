@@ -4,24 +4,33 @@
 
 This API provides services for managing work experiences. With this API, I can perform various operations such as fetching, adding, updating, and deleting work experiences.
 To access the home page for the API, please visit [WorkExperienceAPI](https://jn2307-api-server-8db335f8b5ca.herokuapp.com/).
+This repository contains code for a simple REST API built with Express. The API is designed to manage various courses that I have studied during my time at Mid Sweden University. Basic CRUD (Create, Read, Update, Delete) functionality is implemented.
+The database used for storing the course data is PostgreSQL, which is provided by Heroku as an add-on. The API is deployed on Heroku, and the database is hosted on the same platform.
 
 ## Services
 
 Here are the main services provided by the API:
 
-- **GET**: Retrieve all work experiences - [Retrieve Work Experiences](https://jn2307-api-server-8db335f8b5ca.herokuapp.com/get)  
-  URI: `https://jn2307-api-server-8db335f8b5ca.herokuapp.com/get`
+| Method | Endpoint                        | Description                                                   |
+|--------|---------------------------------|---------------------------------------------------------------|
+| GET    | /workexperience                 | Retrieves all work experiences.                               |
+| GET    | /workexperience/:id             | Retrieves a specific work experience with the specified ID.  |
+| POST   | /workexperience                 | Adds a new work experience. Requires a work experience object to be sent. |
+| PUT    | /workexperience/:id             | Updates an existing work experience with the specified ID. Requires a work experience object to be sent. |
+| DELETE | /workexperience/:id             | Deletes a work experience with the specified ID.             |
 
-- **POST**: Add a new work experience  
-  URI: `https://jn2307-api-server-8db335f8b5ca.herokuapp.com/post`
+### API Request Structure
 
-- **PUT**: Update an existing work experience  
-  URI: `https://jn2307-api-server-8db335f8b5ca.herokuapp.com/put/{id}`  
-  (Replace `{id}` with the ID number of the specific work experience)
-
-- **DELETE**: Delete a work experience  
-  URI: `https://jn2307-api-server-8db335f8b5ca.herokuapp.com/delete/{id}`  
-  (Replace `{id}` with the ID number of the specific work experience)
+```json
+{
+   "Id": id (note: not sent when adding a new course),
+   "companyname": "Example Farm AB",
+   "jobtitle": "Predator Caretaker",
+   "location": "Bjurholm",
+   "startdate": "2021-05-17",
+   "enddate": NULL, // If enddate exists, it is used; otherwise, null is used
+   "description": "Responsible for developing and maintaining goats and sheep." // If description exists, it is used; otherwise, null is used
+}
 
 ### Project Structure
 
