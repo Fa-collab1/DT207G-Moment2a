@@ -37,18 +37,17 @@ Here are the main services provided by the API:
 * "description" can be either "null" or a string.
 
 ### ER Diagram
-   
-   | Table: workexperience |
-|-----------------------|
-| id: SERIAL PK        |
-| companyname: VARCHAR(255) NOT NULL |
-| jobtitle: VARCHAR(255) NOT NULL |
-| location: VARCHAR(255) NOT NULL |
-| startdate: DATE NOT NULL      |
-| enddate: DATE         |
-| description: TEXT     |
+**Table: workexperience**
 
-
+| Column       | Type          | Constraints |
+|--------------|---------------|-------------|
+| id           | SERIAL        | PK          |
+| companyname  | VARCHAR(255)  | NOT NULL    |
+| jobtitle     | VARCHAR(255)  | NOT NULL    |
+| location     | VARCHAR(255)  | NOT NULL    |
+| startdate    | DATE          | NOT NULL    |
+| enddate      | DATE          |             |
+| description  | TEXT          |             |
 
 ### Project Structure
 
