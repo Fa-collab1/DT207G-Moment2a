@@ -82,7 +82,7 @@
             <tbody>
               <tr>
                 <td>GET</td>
-                <td>/get</td>
+                <td><a href="/get">/get</a></td>
                 <td>Retrieves all work experiences.</td>
               </tr>
               <tr>
@@ -349,7 +349,9 @@
               "main": "index.js",
               "scripts": {
                 "test": "echo \"Error: no test specified\" && exit 1",
-                "start": "node src/server.ts"
+                "build": "tsc",
+                "start": "npm run build && node src/server.js",
+                "postinstall": "echo \"Postinstall tasks complete\""
               },
               "author": "",
               "license": "ISC",
@@ -358,14 +360,19 @@
                 "dotenv": "^16.4.5",
                 "ejs": "^3.1.9",
                 "express": "^4.19.2",
-                "parcel": "^2.12.0",
                 "pg": "^8.11.5",
-                "typescript": "^5.4.4"
+                "typescript": "^5.4.4",  
+                "@types/node": "^20.12.5"  
               },
               "devDependencies": {
-                "@types/node": "^20.12.5"
+                "parcel": "^2.12.0"
+              },
+              "engines": {
+                "node": ">=16.0.0",
+                "npm": ">=8.0.0"
               }
-            }</code></pre>
+            }
+            </code></pre>
         </section>
 
         <section id="contact-information">

@@ -101,7 +101,9 @@ The project follows a standard structure for a Node.js application with TypeScri
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/server.ts"
+    "build": "tsc",
+    "start": "npm run build && node src/server.js",
+    "postinstall": "echo \"Postinstall tasks complete\""
   },
   "author": "",
   "license": "ISC",
@@ -110,12 +112,16 @@ The project follows a standard structure for a Node.js application with TypeScri
     "dotenv": "^16.4.5",
     "ejs": "^3.1.9",
     "express": "^4.19.2",
-    "parcel": "^2.12.0",
     "pg": "^8.11.5",
-    "typescript": "^5.4.4"
+    "typescript": "^5.4.4",  
+    "@types/node": "^20.12.5"  
   },
   "devDependencies": {
-    "@types/node": "^20.12.5"
+    "parcel": "^2.12.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
   }
 }
 ```

@@ -259,6 +259,16 @@ caption {
     }
 }
 
+@media only screen and (min-width: 1501px) {
+    /* Select all list items after the first one in the nav bar */
+    #dropdownToggle {
+        display: none;
+    }
+}
+
+
+
+
 @media only screen and (max-height: 600px) {
 
     header, footer {
