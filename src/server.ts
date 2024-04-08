@@ -63,7 +63,7 @@ app.get("/get/:id?", (req: any, res: any) => {
   } else {
     // Om ingen ID-parameter har tillhandahållits, hämta alla rader
     pool.query(
-      "SELECT id, companyname, jobtitle, location, TO_CHAR(startdate, 'YYYY-MM-DD') AS startdate, TO_CHAR(enddate, 'YYYY-MM-DD') AS enddate, description FROM workexperience ORDER BY enddate DESC, startdate DESC",
+      "SELECT id, companyname, jobtitle, location, TO_CHAR(startdate, 'YYYY-MM-DD') AS startdate, TO_CHAR(enddate, 'YYYY-MM-DD') AS enddate, description FROM workexperience ORDER BY enddate DESC, startdate DESC, id DESC",
       (error: any, results: any) => {
         if (error) {
           res.status(500).json({ error: "Database error" });
