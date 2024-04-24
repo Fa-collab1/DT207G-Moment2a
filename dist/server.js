@@ -36,7 +36,6 @@ function startServer() {
             }
             catch (err) {
                 console.log('Failed to connect to MongoDB');
-                process.exit(1);
             }
     });
 }
