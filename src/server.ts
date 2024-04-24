@@ -10,6 +10,7 @@ const app = express();
 const port = process.env.PORT || 3001;
 const mongoURI = process.env.MONGODB_URI;
 
+
 // Isolerad funktion för att starta server och databasanslutning
 async function startServer() {
     app.listen(port, () => {
@@ -20,6 +21,8 @@ async function startServer() {
         console.log("MONGODB_URI is not defined.");
     }
     else
+    console.log('Connecting to MongoDB...');
+    console.log('mongoURI: ', mongoURI);
     try {
         await initializeDatabase();
     } catch (err) {
