@@ -3,11 +3,14 @@ import mongoose, { Schema } from 'mongoose';
 
 dotenv.config();
 
+let mongoURI:string ="";
 if (!process.env.MONGODB_URI) {
-    throw new Error("MONGODB_URI är inte definierad i miljövariablerna.");
+    console.log("MONGODB_URI är inte definierad i miljövariablerna.");
 }
+else {
 
-const mongoURI: string = process.env.MONGODB_URI;
+mongoURI = process.env.MONGODB_URI;
+}
 
 const workExperienceSchema = new Schema({
     companyname: { type: String, required: true },
