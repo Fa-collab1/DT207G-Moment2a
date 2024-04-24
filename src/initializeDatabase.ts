@@ -27,6 +27,7 @@ async function initializeDatabase() {
         console.log("MONGODB_URI is not defined.");
         return;
     }
+    console.log('mongoURI: ', mongoURI);
     await mongoose.connect(mongoURI);
     console.log('connection to MongoDB succeeded.');
     await insertInitialData();

@@ -22,7 +22,6 @@ async function startServer() {
     }
     else
     console.log('Connecting to MongoDB...');
-    console.log('mongoURI: ', mongoURI);
     try {
         await initializeDatabase();
     } catch (err) {
