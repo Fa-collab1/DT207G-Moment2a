@@ -10,10 +10,6 @@ const app = express();
 const port = process.env.PORT || 3001;
 const mongoURI = process.env.MONGODB_URI;
 
-if (!mongoURI) {
-    throw new Error("MONGODB_URI is not defined in the environment variables.");
-}
-
 // Isolerad funktion för att starta server och databasanslutning
 async function startServer() {
     app.listen(port, () => {
