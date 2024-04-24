@@ -24,7 +24,7 @@ async function startServer() {
         await initializeDatabase();
     } catch (err) {
         console.log('Failed to connect to MongoDB');
-        process.exit(1);
+        
     }
 }
 
