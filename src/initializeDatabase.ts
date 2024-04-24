@@ -28,7 +28,7 @@ async function initializeDatabase() {
         return;
     }
     await mongoose.connect(mongoURI);
-    console.log('Anslutning till MongoDB lyckades');
+    console.log('connection to MongoDB succeeded.');
     await insertInitialData();
 }
 
