@@ -2,3 +2,5 @@
 node_modules
 arbetslista.txt
 .env
+src/server.js
+
