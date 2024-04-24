@@ -39,10 +39,6 @@ exports.initializeDatabase = exports.WorkExperience = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 const mongoose_1 = __importStar(require("mongoose"));
 dotenv_1.default.config();
-if (!process.env.MONGODB_URI) {
-    throw new Error("MONGODB_URI är inte definierad i miljövariablerna.");
-}
-const mongoURI = process.env.MONGODB_URI;
 const workExperienceSchema = new mongoose_1.Schema({
     companyname: { type: String, required: true },
     jobtitle: { type: String, required: true },
@@ -53,10 +49,21 @@ const workExperienceSchema = new mongoose_1.Schema({
 });
 const WorkExperience = mongoose_1.default.model('WorkExperience', workExperienceSchema);
 exports.WorkExperience = WorkExperience;
+let mongoURI = "";
+if (!process.env.MONGODB_URI) {
+    console.log("MONGODB_URI is not defined.");
+}
+else {
+    mongoURI = process.env.MONGODB_URI;
+}
 function initializeDatabase() {
     return __awaiter(this, void 0, void 0, function* () {
+        if (mongoURI.length === 0) {
+            console.log("MONGODB_URI is not defined.");
+            return;
+        }
         yield mongoose_1.default.connect(mongoURI);
-        console.log('Anslutning till MongoDB lyckades');
+        console.log('connection to MongoDB succeeded.');
         yield insertInitialData();
     });
 }

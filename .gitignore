@@ -3,3 +3,6 @@ node_modules
 arbetslista.txt
 .env
 src/server.js
+dist
+dist/initializeDatabase.js
+dist/server.js
