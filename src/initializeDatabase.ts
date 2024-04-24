@@ -3,15 +3,6 @@ import mongoose, { Schema } from 'mongoose';
 
 dotenv.config();
 
-let mongoURI:string ="";
-if (!process.env.MONGODB_URI) {
-    console.log("MONGODB_URI är inte definierad i miljövariablerna.");
-}
-else {
-
-mongoURI = process.env.MONGODB_URI;
-}
-
 const workExperienceSchema = new Schema({
     companyname: { type: String, required: true },
     jobtitle: { type: String, required: true },
@@ -20,14 +11,27 @@ const workExperienceSchema = new Schema({
     enddate: { type: Date },
     description: { type: String }
 });
-
 const WorkExperience = mongoose.model('WorkExperience', workExperienceSchema);
 
+let mongoURI:string ="";
+if (!process.env.MONGODB_URI) {
+    console.log("MONGODB_URI is not defined.");
+}
+else {
+
+mongoURI = process.env.MONGODB_URI;
+}
+
 async function initializeDatabase() {
+    if (mongoURI.length===0) {
+        console.log("MONGODB_URI is not defined.");
+        return;
+    }
     await mongoose.connect(mongoURI);
     console.log('Anslutning till MongoDB lyckades');
     await insertInitialData();
 }
+
 
 async function insertInitialData() {
     // Kontrollerar om det redan finns några poster
