@@ -138,9 +138,9 @@ async function insertInitialData() {
     ];
 
     await WorkExperience.insertMany(initialData);
-    console.log("Initial data har lagts till framgångsrikt.");
+    console.log("Initial data added successfully.");
 } else {
-    console.log("Initial data finns redan, inga nya poster tillagda.");
+    console.log("Data already existing, no data initiation made.");
 }
 }
 

@@ -1,10 +1,11 @@
-# WorkExperienceAPI
+# WorkExperienceAPI - MongoDB version
 
 ## Table of Contents
+
 - [About](#about)
 - [Services](#services)
 - [API Request Structure](#api-request-structure)
-- [ER Diagram](#er-diagram)
+- [Work Experience Collection](#work-experience-collection)
 - [Project Structure](#project-structure)
 - [Technologies Used](#technologies-used)
 - [Package Dependencies](#package-dependencies)
@@ -12,10 +13,11 @@
 
 ## About
 
-- **Purpose**: The repository contains code for a simple REST API developed using Express. It includes basic CRUD (Create, Read, Update, Delete) functionalities for managing my work experiences.
-- **Access**: To access the home page of the API, I visit [WorkExperienceAPI](https://jn2307-api-server-8db335f8b5ca.herokuapp.com/).
-- **Database**: PostgreSQL is used to store the course data, provided by Heroku as an add-on.
-- **Deployment**: The API is deployed on Heroku, and the database is also hosted on the same platform.
+- **Purpose**: The repository contains code for a simple REST API developed using Express. 
+- **Access**: To access the home page of the API, I visit [WorkExperienceAPI](https://joni2307-mongodb-fb4a10f76f99.herokuapp.com).[GitHub](https://github.com/Fa-collab1/DT207G-Moment2a/tree/MongoDB).
+- **Functionality**: The API allows me to add, update, delete, and retrieve work experiences. It includes basic CRUD (Create, Read, Update, Delete) functionalities.
+- **Database**: A MongoDB database at MongoAtlas is used to store the work experience data.
+- **Deployment**: The API is deployed on Heroku, [WorkExperienceAPI](https://joni2307-mongodb-fb4a10f76f99.herokuapp.com).
 
 ## Services
 
@@ -23,7 +25,7 @@ Here are the main services provided by the API:
 
 | Method | Endpoint    | Description                                                                                   |
 |--------|-------------|-----------------------------------------------------------------------------------------------|
-| GET    | [`/get`](https://jn2307-api-server-8db335f8b5ca.herokuapp.com/get)      | Retrieves all work experiences. |
+| GET    | [`/get`](https://joni2307-mongodb-fb4a10f76f99.herokuapp.com/get)      | Retrieves all work experiences. |
 | GET    | `/get/:id`  | Retrieves a specific work experience with the specified ID.                                  |
 | POST   | `/post`     | Adds a new work experience. Requires a work experience object to be sent.                    |
 | PUT    | `/put/:id`  | Updates an existing work experience with the specified ID. Requires a work experience object to be sent. |
@@ -42,22 +44,22 @@ Here are the main services provided by the API:
   "description": "Responsible for developing and maintaining goats and sheep."
 }
 ```
-* "id" is not sent when adding a new post.
-* "enddate" can be either "null" or a date.
-* "description" can be either "null" or a string.
 
-### ER Diagram
-**Table: workexperience**
+/ "id" is not sent when adding a new post.
+/ "enddate" can be either "null" or a date.
+/ "description" can be either "null" or a string.
 
-| Column       | Type          | Constraints |
-|--------------|---------------|-------------|
-| id           | SERIAL        | PK          |
-| companyname  | VARCHAR(255)  | NOT NULL    |
-| jobtitle     | VARCHAR(255)  | NOT NULL    |
-| location     | VARCHAR(255)  | NOT NULL    |
-| startdate    | DATE          | NOT NULL    |
-| enddate      | DATE          |             |
-| description  | TEXT          |             |
+### Work Experience Collection
+
+| Field        | Type     | Constraints |
+|--------------|----------|-------------|
+| _id          | ObjectId |             |
+| companyname  | String   | Required    |
+| jobtitle     | String   | Required    |
+| location     | String   | Required    |
+| startdate    | Date     | Required    |
+| enddate      | Date     |             |
+| description  | String   |             |
 
 ### Project Structure
 
@@ -67,7 +69,8 @@ The project follows a standard structure for a Node.js application with TypeScri
 |----------------|-------------|
 | **src/**       | Directory containing the source code files. |
 | **server.ts**  | Main entry point of the application. |
-| **public/**    | Directory containing static assets such as CSS and images. |
+| **initializeDatabase.ts**  | Database starter|
+| **public/**    | Directory containing static assets such as CSS, some javascript files and images. |
 | **views/**     | Directory containing EJS templates for rendering HTML. |
 | **.env**       | Configuration file for storing environment variables. (Not included in the repository for safety reasons) |
 | **package.json** | File containing metadata and dependencies for the project. |
@@ -81,14 +84,14 @@ The project follows a standard structure for a Node.js application with TypeScri
 |--------------|-------------------------------------------------------------------------------|
 | VS Code      | Integrated development environment (IDE) used for coding.                     |
 | Heroku       | Cloud platform used for deployment.                                           |
-| PostgreSQL   | Relational database management system used for data storage (included in Heroku platform). |
+| MongoDB      | NoSQL database management system used for data storage (run on MongoAtlas). |
 | Parcel       | Web application bundler used for bundling and serving static assets.           |
 | TypeScript   | Typed superset of JavaScript used for development.                             |
 | Express      | Web application framework used for building APIs.                              |
 | EJS          | Embedded JavaScript templating language used for generating HTML markup.       |
 | Dotenv       | Zero-dependency module used for loading environment variables from a `.env` file. |
 | CORS         | Node.js package used for enabling CORS with various options.                  |
-| PG           | PostgreSQL client for Node.js used for interfacing with PostgreSQL database.  |
+| Mongoose     | MongoDB object modeling for Node.js, providing a schema-based solution for data modeling and interaction with MongoDB databases.|
 | Node.js      | JavaScript runtime environment used for running the API server.                |
 
 ### Package Dependencies

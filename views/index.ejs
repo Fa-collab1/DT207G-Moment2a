@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WorkExperienceAPI</title>
+    <title>WorkExperienceAPI (MongoDB)</title>
     <link rel="stylesheet" href="/css/main.css" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -21,12 +21,12 @@
       <header>
     <nav>
         <ul class="nav-links">
-            <li id="dropdownToggle" class="dropdown-toggle currentPage">WorkExperienceAPI &#9662;</li>
+            <li id="dropdownToggle" class="dropdown-toggle currentPage">WorkExperienceAPI (MongoDB)&#9662;</li>
             <div id="dropdownContainerCopy" class="dropdown-container-copy hidden"> <!-- gav upp på att få det här snyggare så jag nöjde mig med en lösning som fungerade iallafall -->
                 <li><a href="#about">About</a></li>
                 <li><a href="#services">Services</a></li>
                 <li><a href="#api-request-structure">API Request Structure</a></li>
-                <li><a href="#er-diagram">ER Diagram</a></li>
+                <li><a href="#work-experience-collection">Work Experience Collection</a></li>
                 <li><a href="#project-structure">Project Structure</a></li>
                 <li><a href="#technologies-used">Technologies Used</a></li>
                 <li><a href="#package-dependencies">Package Dependencies</a></li>
@@ -37,7 +37,7 @@
                 <li><a href="#about">About</a></li>
                 <li><a href="#services">Services</a></li>
                 <li><a href="#api-request-structure">API Request Structure</a></li>
-                <li><a href="#er-diagram">ER Diagram</a></li>
+                <li><a href="#work-experience-collection">Work Experience Collection</a></li>
                 <li><a href="#project-structure">Project Structure</a></li>
                 <li><a href="#technologies-used">Technologies Used</a></li>
                 <li><a href="#package-dependencies">Package Dependencies</a></li>
@@ -51,19 +51,16 @@
       </header>
       <div class="Pagecontent">
         <section>
-          <h2 id="about">About WorkExperienceAPI</h2>
+          <h2 id="about">About WorkExperienceAPI - MongoDB Version</h2>
           <p>
             - <strong>Purpose</strong>: The repository contains code for a
-            simple REST API developed using Express. It includes basic CRUD
-            (Create, Read, Update, Delete) functionalities for managing my work
-            experiences.<br />
+            simple REST API developed using Express. The API allows me to add, update, delete, and retrieve work experiences. It includes basic CRUD (Create, Read, Update, Delete) functionalities. <br />
             - <strong>Access</strong>: To access the GIT repository for this
             API, please visit
-            <a href="https://github.com/Fa-collab1/DT207G-Moment2a/"
-              >GitHub: WorkExperienceAPI</a
+            <a href="https://github.com/Fa-collab1/DT207G-Moment2a/tree/MongoDB"
+              >GitHub: WorkExperienceAPI - MongoDB Version</a
             >.<br />
-            - <strong>Database</strong>: PostgreSQL is used to store the course
-            data, provided by Heroku as an add-on.<br />
+            - <strong>Database</strong>: A MongoDB database at MongoAtlas is used to store the work experience data.<br />
             - <strong>Deployment</strong>: The API is deployed on Heroku, and
             the database is also hosted on the same platform.
           </p>
@@ -143,14 +140,14 @@
         </section>
 
         <section>
-          <h2 id="er-diagram">ER Diagram</h2>
+          <h2 id="work-experience-collection">Work Experience Collection</h2>
           <table>
             <caption>
               Table: workexperience
             </caption>
             <thead>
               <tr>
-                <th>Column</th>
+                <th>Field</th>
                 <th>Type</th>
                 <th>Constraints</th>
               </tr>
@@ -158,37 +155,37 @@
             <tbody>
               <tr>
                 <td>id</td>
-                <td>SERIAL</td>
-                <td>PK</td>
+                <td>ObjectID</td>
+                <td></td>
               </tr>
               <tr>
                 <td>companyname</td>
-                <td>VARCHAR(255)</td>
-                <td>NOT NULL</td>
+                <td>String</td>
+                <td>Required</td>
               </tr>
               <tr>
                 <td>jobtitle</td>
-                <td>VARCHAR(255)</td>
-                <td>NOT NULL</td>
+                <td>String</td>
+                <td>Required</td>
               </tr>
               <tr>
                 <td>location</td>
-                <td>VARCHAR(255)</td>
-                <td>NOT NULL</td>
+                <td>String</td>
+                <td>Required</td>
               </tr>
               <tr>
                 <td>startdate</td>
-                <td>DATE</td>
-                <td>NOT NULL</td>
+                <td>Date</td>
+                <td>Required</td>
               </tr>
               <tr>
                 <td>enddate</td>
-                <td>DATE</td>
+                <td>Date</td>
                 <td></td>
               </tr>
               <tr>
                 <td>description</td>
-                <td>TEXT</td>
+                <td>String</td>
                 <td></td>
               </tr>
             </tbody>
@@ -214,9 +211,13 @@
                 <td>Main entry point of the application.</td>
               </tr>
               <tr>
+                <td><strong>initializeDatabase.ts</strong></td>
+                <td>Database starter.</td>
+              </tr>
+              <tr>
                 <td><strong>public/</strong></td>
                 <td>
-                  Directory containing static assets such as CSS and images.
+                  Directory containing static assets such as CSS, some javascript files and and images.
                 </td>
               </tr>
               <tr>
@@ -276,10 +277,9 @@
                 <td>Cloud platform used for deployment.</td>
               </tr>
               <tr>
-                <td>PostgreSQL</td>
+                <td>MongoDB</td>
                 <td>
-                  Relational database management system used for data storage
-                  (included in Heroku platform).
+                  NoSQL database management system used for data storage (run on MongoAtlas).
                 </td>
               </tr>
               <tr>
@@ -318,10 +318,9 @@
                 </td>
               </tr>
               <tr>
-                <td>PG</td>
+                <td>Mongoose</td>
                 <td>
-                  PostgreSQL client for Node.js used for interfacing with
-                  PostgreSQL database.
+                  MongoDB object modeling for Node.js, providing a schema-based solution for data modeling and interaction with MongoDB databases.
                 </td>
               </tr>
               <tr>
@@ -350,22 +349,26 @@
               "scripts": {
                 "test": "echo \"Error: no test specified\" && exit 1",
                 "build": "tsc",
-                "start": "npm run build && node src/server.js",
+                "start": "npm run build && node dist/server.js",
                 "postinstall": "echo \"Postinstall tasks complete\""
               },
               "author": "",
               "license": "ISC",
               "dependencies": {
+                "@types/node": "^20.12.5",
                 "cors": "^2.8.5",
                 "dotenv": "^16.4.5",
                 "ejs": "^3.1.9",
                 "express": "^4.19.2",
-                "pg": "^8.11.5",
-                "typescript": "^5.4.4",  
-                "@types/node": "^20.12.5"  
+                "mongodb": "^6.5.0",
+                "mongoose": "^8.3.2",
+                "parcel": "^2.12.0",
+                "typescript": "^5.4.4",
+                "@types/cors": "^2.8.17",
+                "@types/express": "^4.17.21"
+            
               },
               "devDependencies": {
-                "parcel": "^2.12.0"
               },
               "engines": {
                 "node": ">=16.0.0",
