@@ -3,20 +3,10 @@ import { MongoClient, ObjectId } from 'mongodb';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { initializeDatabase } from './initializeDatabase.js'; // Importera initializeDatabase-funktionen från skriptet
+import { WorkExperience } from './initializeDatabase.js'; // Importera initializeDatabase-funktionen från skriptet
+
 
 dotenv.config(); // Detta läser min .env-fil och gör variablerna tillgängliga
-
-// Definiera gränssnitt för arbetslivserfarenhetsdata
-interface WorkExperience {
-  _id?: ObjectId;
-  companyname: string;
-  jobtitle: string;
-  location: string;
-  startdate: Date;
-  enddate?: Date | null | undefined;
-  description?: string;
-}
-
 
 const app = express();
 const port = process.env.PORT || 3001;

@@ -1,26 +1,37 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const mongoURI:string|undefined = process.env.MONGODB_URI;
+const mongoURI: string | undefined = process.env.MONGODB_URI;
 
+// Definiera gränssnitt för arbetslivserfarenhetsdata
+export interface WorkExperience {
+    _id?: ObjectId;
+    companyname: string;
+    jobtitle: string;
+    location: string;
+    startdate: Date;
+    enddate?: Date | null | undefined;
+    description?: string;
+}
 
 export async function initializeDatabase() {
     if (!mongoURI) {
         throw new Error("MONGODB_URI is not defined in the environment variables.");
     }
 
-const client = new MongoClient(mongoURI);
+    const client = new MongoClient(mongoURI);
     try {
         await client.connect();
         console.log("Connected to MongoDB");
 
-        const db = client.db();  
+        const db = client.db();
         const collection = await db.listCollections({ name: 'workexperience' }, { nameOnly: true }).next();
         if (!collection) {
             console.log("Collection does not exist. Creating and inserting data...");
-            const initialData = [                {
+            const initialData: WorkExperience[] = [
+                {
                     companyname: 'Telia Sverige AB',
                     jobtitle: 'Billing Specialist',
                     location: 'Solna, Sweden',
