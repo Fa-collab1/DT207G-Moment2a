@@ -1,210 +1,193 @@
-const fs = require("fs");
-const path = require("path");
-const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+import express, { Request, Response } from 'express';
+import { MongoClient, ObjectId } from 'mongodb';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { initializeDatabase } from './initializeDatabase.js'; // Importera initializeDatabase-funktionen från skriptet
 
-require("dotenv").config(); // Detta läser min .env-fil och gör variablerna tillgängliga
+dotenv.config(); // Detta läser min .env-fil och gör variablerna tillgängliga
 
-function createTableIfNotExists() {
-  const createTableScriptPath = path.join(__dirname, "create_table.sql");
-  const createTableScript = fs.readFileSync(createTableScriptPath, "utf8");
-
-  pool.query(createTableScript, (error: Error, results: any) => {
-    if (error) {
-      console.error("Error creating table:", error);
-    } else {
-      console.log("Table successfully created! (or already existing)");
-    }
-  });
+// Definiera gränssnitt för arbetslivserfarenhetsdata
+interface WorkExperience {
+  _id?: ObjectId;
+  companyname: string;
+  jobtitle: string;
+  location: string;
+  startdate: Date;
+  enddate?: Date | null | undefined;
+  description?: string;
 }
 
-const { Pool } = require("pg"); // Använder pg-paketet för att skapa en databasklient
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // Använder DATABASE_URL från min .env (och Heroku använder en egen sådan variabel så .env-filen inte exponeras och därmed inte är synlig för andra då den inte laddas upp till GitHub)
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
 
-const express = require("express"); // Använder express för att skapa en server
-const cors = require("cors"); // Använder cors för att tillåta cross-origin requests
-const app = express(); // Skapar en instans av express
+const app = express();
 const port = process.env.PORT || 3001;
 
+const mongoURI = process.env.MONGODB_URI;
+if (!mongoURI) {
+    throw new Error("MONGODB_URI är inte definierad i miljövariablerna.");
+}
 
-app.set("view engine", "ejs"); // Ange EJS som vy-motorn
+const client = new MongoClient(mongoURI);
+let db: any;
+
+// Funktion för att ansluta till MongoDB-databasen
+async function connectToMongoDB() {
+    try {
+        await client.connect();
+        console.log('Anslutning till MongoDB lyckades');
+        db = client.db();
+        await initializeDatabase(); // Anropa initializeDatabase-funktionen för att konfigurera databasen
+    } catch (err) {
+        console.error('Misslyckades med att ansluta till MongoDB', err);
+        process.exit(1);
+    }
+}
+
+app.use(cors()); // Använder cors för att tillåta cross-origin requests
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public")); // Ange mapp för statiska filer
-app.use(express.urlencoded({ extended: true })); // Middleware för att tolka URL
+app.set("view engine", "ejs"); // Ange EJS som vy-motorn
 
-app.use(express.json()); // Middleware för att tolka JSON
-app.use(cors()); // Middleware för att tillåta cross-origin requests
-
-app.get("/get/:id?", (req: any, res: any) => {
+// Route för att hämta alla erfarenheter eller en specifik erfarenhet
+app.get("/get/:id?", async (req: Request, res: Response) => {
   const id = req.params.id;
-
   if (id) {
-    // Om ett ID har tillhandahållits, hämta den specifika raden med det ID:et
-    if (!/^\d+$/.test(id)) {
-      res.status(401).json({ message: "ID (integer) is required" });
-      return;
-    }
-    pool.query(
-      "SELECT id, companyname, jobtitle, location, TO_CHAR(startdate, 'YYYY-MM-DD') AS startdate, TO_CHAR(enddate, 'YYYY-MM-DD') AS enddate, description FROM workexperience WHERE id = $1",
-      [id],
-      (error: any, results: any) => {
-        if (error) {
-          res.status(500).json({ error: "Database error" });
-        } else if (results.rows.length > 0) {
-          res.status(200).json(results.rows[0]); // Skicka bara första raden
-        } else {
-          res.status(404).json({ message: "Requested post not found" });
-        }
+      if (!ObjectId.isValid(id)) {
+          return res.status(401).json({ message: "A valid ID is required" });
       }
-    );
+      try {
+          const doc: WorkExperience | null = await db.collection('workexperience').findOne({ _id: new ObjectId(id) });
+          if (doc) {
+              // konverterar datum till strängformat innan svaret skickas
+              const formattedDoc = {
+                  ...doc,
+                  startdate: doc.startdate.toISOString().split('T')[0],
+                  enddate: doc.enddate ? doc.enddate.toISOString().split('T')[0] : null
+              };
+              res.status(200).json(formattedDoc);
+          } else {
+              res.status(404).json({ message: "Requested post not found" });
+          }
+      } catch (error) {
+          res.status(500).json({ error: "Database error", detail: error });
+      }
   } else {
-    // Om ingen ID-parameter har tillhandahållits, hämta alla rader
-    pool.query(
-      "SELECT id, companyname, jobtitle, location, TO_CHAR(startdate, 'YYYY-MM-DD') AS startdate, TO_CHAR(enddate, 'YYYY-MM-DD') AS enddate, description FROM workexperience ORDER BY enddate DESC, startdate DESC, id DESC",
-      (error: any, results: any) => {
-        if (error) {
-          res.status(500).json({ error: "Database error" });
-        } else {
-          res.status(200).json(results.rows);
+      try {
+          const docs: WorkExperience[] = await db.collection('workexperience').find({}).toArray();
+          // konverterar datum till strängformat innan svaret skickas
+          const formattedDocs = docs.map(doc => ({
+              ...doc,
+              startdate: doc.startdate.toISOString().split('T')[0],
+              enddate: doc.enddate ? doc.enddate.toISOString().split('T')[0] : null
+          }));
+          res.status(200).json(formattedDocs);
+      } catch (error) {
+          res.status(500).json({ error: "Database error", detail: error });
+      }
+  }
+});
+
+
+
+function validateWorkExperience(data: WorkExperience): string[] {
+  const errors: string[] = [];
+
+  if (!data.companyname) errors.push("Company name is required");
+  if (!data.jobtitle) errors.push("Job title is required");
+  if (!data.location) errors.push("Location is required");
+  if (!data.startdate) errors.push("Start date is required");
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(data.startdate.toISOString().split('T')[0])) {
+      errors.push("Start date must be in a valid format (YYYY-MM-DD)");
+  }
+  // kontrollera om enddate är tillgängligt och inte redan är ett Date-objekt
+  if (data.enddate && !(data.enddate instanceof Date)) {
+      data.enddate = new Date(data.enddate);
+  }
+  // kontrollera om enddate är tillgängligt och inte är ett giltigt datum
+  if (data.enddate && isNaN(data.enddate.getTime())) {
+      errors.push("End date must be a valid date");
+  }
+  // kontrollera om enddate är tillgängligt och är mindre än startdate
+  if (data.enddate && data.enddate < data.startdate) {
+      errors.push("End date must be greater than or equal to start date");
+  }
+
+  return errors;
+}
+
+
+// Route för att posta ny erfarenhet
+app.post("/post", async (req: Request, res: Response) => {
+    const data: WorkExperience = req.body;
+    const errors: string[] = validateWorkExperience(data);
+
+    if (errors.length > 0) {
+        return res.status(400).json({ error: errors });
+    }
+
+    try {
+        const result = await db.collection('workexperience').insertOne(data);
+        res.status(201).json({ message: "Work experience added successfully", id: result.insertedId });
+    } catch (error) {
+        res.status(500).json({ error: "Database problem, request failed!", detail: error });
+    }
+});
+
+// Route för att uppdatera befintlig erfarenhet
+app.put("/put/:id", async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const data: WorkExperience = req.body;
+    const errors: string[] = validateWorkExperience(data);
+
+    if (!ObjectId.isValid(id)) errors.push("ID is not valid");
+
+    if (errors.length > 0) {
+        return res.status(400).json({ error: errors });
+    }
+
+    try {
+        const result = await db.collection('workexperience').updateOne({ _id: new ObjectId(id) }, {
+            $set: {
+                ...data,
+                startdate: new Date(data.startdate),
+                enddate: data.enddate ? new Date(data.enddate) : null
+            }
+        });
+        if (result.modifiedCount === 0) {
+            return res.status(404).json({ message: "No record found with ID " + id });
         }
-      }
-    );
-  }
-});
-
-app.post("/post", (req: any, res: any) => {
-  let { companyname, jobtitle, location, startdate, enddate, description } =
-    req.body;
-  let error: string[] = [];
-
-  // Skicka en SQL-förfrågan till databasen för att infoga en ny rad
-
-  if (companyname.length < 1 || !companyname) {
-    error.push("Company name is required");
-  }
-  if (jobtitle.length < 1 || !jobtitle) {
-    error.push("Job title is required");
-  }
-  if (location.length < 1 || location === null) {
-    error.push("Location is required");
-  }
-  if (!startdate || startdate.length < 1 || !dateRegex.test(startdate)) {
-    error.push("Start date in a valid format is required");
-  }
-  if (!enddate || enddate.length < 1) {
-    enddate = null;
-  } else if (!dateRegex.test(enddate)) {
-    error.push("End date is not in a valid format");
-  }
-  if (!description || description.length < 1) {
-    description = null;
-  }
-
-  if (error.length > 0) {
-    return res.status(400).json({ error: error });
-  }
-
-  pool.query(
-    "INSERT INTO workexperience (companyname, jobtitle, location, startdate, enddate, description) VALUES ($1, $2, $3, $4, $5, $6)",
-    [companyname, jobtitle, location, startdate, enddate, description],
-    (error: any, results: any) => {
-      if (error) {
-        res.status(500).json({ error: "Database problem, request failed!" });
-      } else {
-        res.status(201).json({ message: "Work experience added successfully" });
-      }
+        res.status(200).json({ message: "Work experience with id " + id + " updated" });
+    } catch (error) {
+        res.status(500).json({ error: "Updating the record for id " + id + " failed!", detail: error });
     }
-  );
 });
 
-app.put("/put/:id", (req: any, res: any) => {
-  const id = req.params.id;
-  let { companyname, jobtitle, location, startdate, enddate, description } =
-    req.body;
-  let error: string[] = [];
+// Route för att ta bort erfarenhet
+app.delete("/delete/:id", async (req: Request, res: Response) => {
+    const id = req.params.id;
 
-  // Skicka en SQL-förfrågan till databasen för att infoga en ny rad
-
-  if (!/^\d+$/.test(id)) {
-    res.status(401).json({ message: "ID (integer) is required" });
-    return;
-  }
-  if (companyname.length < 1 || !companyname) {
-    error.push("Company name is required");
-  }
-  if (jobtitle.length < 1 || !jobtitle) {
-    error.push("Job title is required");
-  }
-  if (location.length < 1 || location === null) {
-    error.push("Location is required");
-  }
-  if (!startdate || startdate.length < 1 || !dateRegex.test(startdate)) {
-    error.push("Start date in a valid format is required");
-  }
-  if (!enddate || enddate.length < 1) {
-    enddate = null;
-  } else if (!dateRegex.test(enddate)) {
-    error.push("End date is not in a valid format");
-  }
-  if (!description || description.length < 1) {
-    description = null;
-  }
-
-  if (error.length > 0) {
-    return res.status(400).json({ error: error });
-  }
-
-  // Skicka en SQL-förfrågan till databasen för att uppdatera en rad med ett visst ID
-  pool.query(
-    "UPDATE workexperience SET companyname = $1, jobtitle = $2, location = $3, startdate = $4, enddate = $5, description = $6 WHERE id = $7",
-    [companyname, jobtitle, location, startdate, enddate, description, id],
-    (error: any, results: any) => {
-      if (error) {
-        res
-          .status(500)
-          .json({ error: `Updating the record for id ${id} failed!` });
-      } else {
-        res
-          .status(200)
-          .json({ message: `Work experience with id ${id} updated` });
-      }
+    if (!ObjectId.isValid(id)) {
+        return res.status(401).json({ message: "ID is not valid" });
     }
-  );
-});
 
-app.delete("/delete/:id", (req: any, res: any) => {
-  const id = req.params.id;
-
-  if (!/^\d+$/.test(id)) {
-    res.status(401).json({ message: "ID (integer) is required" });
-    return;
-  }
-
-  // Skicka en SQL-förfrågan till databasen för att ta bort en rad med ett visst ID
-  pool.query(
-    "DELETE FROM workexperience WHERE id = $1",
-    [id],
-    (error: any, results: any) => {
-      if (error) {
-        res.status(500).json({ error: "Request failed!" });
-      } else {
-        res
-          .status(200)
-          .json({ message: `workexperience with id ${id} deleted` });
-      }
+    try {
+        const result = await db.collection('workexperience').deleteOne({ _id: new ObjectId(id) });
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: "No record found with ID " + id });
+        }
+        res.status(200).json({ message: "Work experience with id " + id + " deleted" });
+    } catch (error) {
+        res.status(500).json({ error: "Request failed!", detail: error });
     }
-  );
-});
-
-app.listen(port, () => {
-  createTableIfNotExists();
-  console.log("Server is running on port: " + port);
 });
 
 // Route för "Index" sidan
 app.get("/", (req: any, res: any) => {
-  res.render("index"); // En infosida om hur API-grejerna fungerar
+    res.render("index"); // En infosida om hur API-grejerna fungerar
+});
+
+// Start server
+app.listen(port, () => {
+    console.log(`Server is running on port: ${port}`);
+    connectToMongoDB();
 });
