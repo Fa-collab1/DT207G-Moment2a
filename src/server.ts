@@ -16,17 +16,18 @@ if (!mongoURI) {
 
 // Isolerad funktion för att starta server och databasanslutning
 async function startServer() {
+    app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+    });
+
     if (!mongoURI) {
-        throw new Error("MONGODB_URI is not defined.");
+        console.log("MONGODB_URI is not defined.");
     }
     else
     try {
         await initializeDatabase();
-        app.listen(port, () => {
-            console.log(`Server is running on http://localhost:${port}`);
-        });
     } catch (err) {
-        console.error('Failed to connect to MongoDB', err);
+        console.log('Failed to connect to MongoDB');
         process.exit(1);
     }
 }
