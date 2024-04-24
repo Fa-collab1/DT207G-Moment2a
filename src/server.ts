@@ -1,33 +1,32 @@
 import express, { Request, Response } from 'express';
-import { MongoClient, ObjectId } from 'mongodb';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { initializeDatabase } from './initializeDatabase.js'; // Importera initializeDatabase-funktionen från skriptet
-import { WorkExperience } from './initializeDatabase.js'; // Importera initializeDatabase-funktionen från skriptet
-
+import mongoose from 'mongoose';
+import { initializeDatabase, WorkExperience } from './initializeDatabase';
 
 dotenv.config(); // Detta läser min .env-fil och gör variablerna tillgängliga
 
 const app = express();
 const port = process.env.PORT || 3001;
-
 const mongoURI = process.env.MONGODB_URI;
+
 if (!mongoURI) {
-    throw new Error("MONGODB_URI är inte definierad i miljövariablerna.");
+    throw new Error("MONGODB_URI is not defined in the environment variables.");
 }
 
-const client = new MongoClient(mongoURI);
-let db: any;
-
-// Funktion för att ansluta till MongoDB-databasen
-async function connectToMongoDB() {
+// Isolerad funktion för att starta server och databasanslutning
+async function startServer() {
+    if (!mongoURI) {
+        throw new Error("MONGODB_URI is not defined.");
+    }
+    else
     try {
-        await client.connect();
-        console.log('Anslutning till MongoDB lyckades');
-        db = client.db();
-        await initializeDatabase(); // Anropa initializeDatabase-funktionen för att konfigurera databasen
+        await initializeDatabase();
+        app.listen(port, () => {
+            console.log(`Server is running on http://localhost:${port}`);
+        });
     } catch (err) {
-        console.error('Misslyckades med att ansluta till MongoDB', err);
+        console.error('Failed to connect to MongoDB', err);
         process.exit(1);
     }
 }
@@ -38,19 +37,40 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public")); // Ange mapp för statiska filer
 app.set("view engine", "ejs"); // Ange EJS som vy-motorn
 
+// Valideringsfunktion för arbetserfarneheter
+function validateWorkExperience(data: any): string[] {
+    const errors: string[] = [];
+
+    if (!data.companyname) errors.push("Company name is required");
+    if (!data.jobtitle) errors.push("Job title is required");
+    if (!data.location) errors.push("Location is required");
+    if (!data.startdate) errors.push("Start date is required");
+    if (data.startdate && !/^\d{4}-\d{2}-\d{2}$/.test(data.startdate)) {
+        errors.push("Start date must be in a valid format (YYYY-MM-DD)");
+    }
+    if (data.enddate && new Date(data.enddate).toString() === "Invalid Date") {
+        errors.push("End date must be a valid date");
+    }
+    if (data.enddate && new Date(data.enddate) < new Date(data.startdate)) {
+        errors.push("End date must be greater than or equal to start date");
+    }
+
+    return errors;
+}
+
+
 // Route för att hämta alla erfarenheter eller en specifik erfarenhet
 app.get("/get/:id?", async (req: Request, res: Response) => {
   const id = req.params.id;
   if (id) {
-      if (!ObjectId.isValid(id)) {
+      if (!mongoose.Types.ObjectId.isValid(id)) {
           return res.status(401).json({ message: "A valid ID is required" });
       }
       try {
-          const doc: WorkExperience | null = await db.collection('workexperience').findOne({ _id: new ObjectId(id) });
+          const doc = await WorkExperience.findById(id);
           if (doc) {
-              // konverterar datum till strängformat innan svaret skickas
               const formattedDoc = {
-                  ...doc,
+                  ...doc.toObject(),
                   startdate: doc.startdate.toISOString().split('T')[0],
                   enddate: doc.enddate ? doc.enddate.toISOString().split('T')[0] : null
               };
@@ -63,10 +83,9 @@ app.get("/get/:id?", async (req: Request, res: Response) => {
       }
   } else {
       try {
-          const docs: WorkExperience[] = await db.collection('workexperience').find({}).toArray();
-          // konverterar datum till strängformat innan svaret skickas
+          const docs = await WorkExperience.find({});
           const formattedDocs = docs.map(doc => ({
-              ...doc,
+              ...doc.toObject(),
               startdate: doc.startdate.toISOString().split('T')[0],
               enddate: doc.enddate ? doc.enddate.toISOString().split('T')[0] : null
           }));
@@ -77,47 +96,17 @@ app.get("/get/:id?", async (req: Request, res: Response) => {
   }
 });
 
-
-
-function validateWorkExperience(data: WorkExperience): string[] {
-  const errors: string[] = [];
-
-  if (!data.companyname) errors.push("Company name is required");
-  if (!data.jobtitle) errors.push("Job title is required");
-  if (!data.location) errors.push("Location is required");
-  if (!data.startdate) errors.push("Start date is required");
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(data.startdate.toISOString().split('T')[0])) {
-      errors.push("Start date must be in a valid format (YYYY-MM-DD)");
-  }
-  // kontrollera om enddate är tillgängligt och inte redan är ett Date-objekt
-  if (data.enddate && !(data.enddate instanceof Date)) {
-      data.enddate = new Date(data.enddate);
-  }
-  // kontrollera om enddate är tillgängligt och inte är ett giltigt datum
-  if (data.enddate && isNaN(data.enddate.getTime())) {
-      errors.push("End date must be a valid date");
-  }
-  // kontrollera om enddate är tillgängligt och är mindre än startdate
-  if (data.enddate && data.enddate < data.startdate) {
-      errors.push("End date must be greater than or equal to start date");
-  }
-
-  return errors;
-}
-
-
 // Route för att posta ny erfarenhet
 app.post("/post", async (req: Request, res: Response) => {
-    const data: WorkExperience = req.body;
-    const errors: string[] = validateWorkExperience(data);
-
+    const errors = validateWorkExperience(req.body);
     if (errors.length > 0) {
-        return res.status(400).json({ error: errors });
+        return res.status(400).json({ errors });
     }
 
     try {
-        const result = await db.collection('workexperience').insertOne(data);
-        res.status(201).json({ message: "Work experience added successfully", id: result.insertedId });
+        const newExperience = new WorkExperience(req.body);
+        const savedExperience = await newExperience.save();
+        res.status(201).json({ message: "Work experience added successfully", id: savedExperience._id });
     } catch (error) {
         res.status(500).json({ error: "Database problem, request failed!", detail: error });
     }
@@ -126,27 +115,21 @@ app.post("/post", async (req: Request, res: Response) => {
 // Route för att uppdatera befintlig erfarenhet
 app.put("/put/:id", async (req: Request, res: Response) => {
     const id = req.params.id;
-    const data: WorkExperience = req.body;
-    const errors: string[] = validateWorkExperience(data);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: "ID is not valid" });
+    }
 
-    if (!ObjectId.isValid(id)) errors.push("ID is not valid");
-
+    const errors = validateWorkExperience(req.body);
     if (errors.length > 0) {
-        return res.status(400).json({ error: errors });
+        return res.status(400).json({ errors });
     }
 
     try {
-        const result = await db.collection('workexperience').updateOne({ _id: new ObjectId(id) }, {
-            $set: {
-                ...data,
-                startdate: new Date(data.startdate),
-                enddate: data.enddate ? new Date(data.enddate) : null
-            }
-        });
-        if (result.modifiedCount === 0) {
+        const updatedExperience = await WorkExperience.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
+        if (!updatedExperience) {
             return res.status(404).json({ message: "No record found with ID " + id });
         }
-        res.status(200).json({ message: "Work experience with id " + id + " updated" });
+        res.status(200).json({ message: "Work experience updated successfully", id: updatedExperience._id });
     } catch (error) {
         res.status(500).json({ error: "Updating the record for id " + id + " failed!", detail: error });
     }
@@ -155,29 +138,25 @@ app.put("/put/:id", async (req: Request, res: Response) => {
 // Route för att ta bort erfarenhet
 app.delete("/delete/:id", async (req: Request, res: Response) => {
     const id = req.params.id;
-
-    if (!ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(401).json({ message: "ID is not valid" });
     }
 
     try {
-        const result = await db.collection('workexperience').deleteOne({ _id: new ObjectId(id) });
-        if (result.deletedCount === 0) {
-            return res.status(404).json({ message: "No record found with ID " + id });
+        const result = await WorkExperience.findByIdAndDelete(id);
+        if (result) {
+            res.status(200).json({ message: "Work experience deleted successfully" });
+        } else {
+            res.status(404).json({ message: "No record found with ID " + id });
         }
-        res.status(200).json({ message: "Work experience with id " + id + " deleted" });
     } catch (error) {
-        res.status(500).json({ error: "Request failed!", detail: error });
+        res.status(500).json({ error: "Deleting the record failed!", detail: error });
     }
 });
 
 // Route för "Index" sidan
-app.get("/", (req: any, res: any) => {
+app.get("/", (req, res) => {
     res.render("index"); // En infosida om hur API-grejerna fungerar
 });
 
-// Start server
-app.listen(port, () => {
-    console.log(`Server is running on port: ${port}`);
-    connectToMongoDB();
-});
+startServer(); // Starta servern och databasanslutning
