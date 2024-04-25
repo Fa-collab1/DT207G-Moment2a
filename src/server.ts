@@ -78,7 +78,7 @@ app.get("/get/:id?", async (req: Request, res: Response) => {
               res.status(404).json({ message: "Requested post not found" });
           }
       } catch (error) {
-          res.status(500).json({ error: "Database error", detail: error });
+          res.status(500).json({ message: "Database error", detail: error });
       }
   } else {
       try {
@@ -90,16 +90,16 @@ app.get("/get/:id?", async (req: Request, res: Response) => {
           }));
           res.status(200).json(formattedDocs);
       } catch (error) {
-          res.status(500).json({ error: "Database error", detail: error });
+          res.status(500).json({ message: "Database error", detail: error });
       }
   }
 });
 
 // Route för att posta ny erfarenhet
 app.post("/post", async (req: Request, res: Response) => {
-    const errors = validateWorkExperience(req.body);
-    if (errors.length > 0) {
-        return res.status(400).json({ errors });
+    const message = validateWorkExperience(req.body);
+    if (message.length > 0) {
+        return res.status(400).json({ message });
     }
 
     try {
@@ -107,7 +107,7 @@ app.post("/post", async (req: Request, res: Response) => {
         const savedExperience = await newExperience.save();
         res.status(201).json({ message: "Work experience added successfully", id: savedExperience._id });
     } catch (error) {
-        res.status(500).json({ error: "Database problem, request failed!", detail: error });
+        res.status(500).json({ message: "Database problem, request failed!", detail: error });
     }
 });
 
@@ -118,9 +118,9 @@ app.put("/put/:id", async (req: Request, res: Response) => {
         return res.status(400).json({ message: "ID is not valid" });
     }
 
-    const errors = validateWorkExperience(req.body);
-    if (errors.length > 0) {
-        return res.status(400).json({ errors });
+    const message = validateWorkExperience(req.body);
+    if (message.length > 0) {
+        return res.status(400).json({ message });
     }
 
     try {
@@ -130,7 +130,7 @@ app.put("/put/:id", async (req: Request, res: Response) => {
         }
         res.status(200).json({ message: "Work experience updated successfully", id: updatedExperience._id });
     } catch (error) {
-        res.status(500).json({ error: "Updating the record for id " + id + " failed!", detail: error });
+        res.status(500).json({ message: "Updating the record for id " + id + " failed!", detail: error });
     }
 });
 
@@ -149,7 +149,7 @@ app.delete("/delete/:id", async (req: Request, res: Response) => {
             res.status(404).json({ message: "No record found with ID " + id });
         }
     } catch (error) {
-        res.status(500).json({ error: "Deleting the record failed!", detail: error });
+        res.status(500).json({ message: "Deleting the record failed!", detail: error });
     }
 });
 
